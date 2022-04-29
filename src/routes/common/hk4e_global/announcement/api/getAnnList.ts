@@ -4,9 +4,7 @@ import https from 'https';
 
 export default class check {
     static async get(req: http.IncomingMessage, res: http.ServerResponse){
-        res.writeHead(200, {
-            'Content-Type': 'text/plain'
-        });
+        res.writeHead(200, { 'Content-Type': 'application/json' })
 
         res.write(JSON.stringify({
             retcode: 0,

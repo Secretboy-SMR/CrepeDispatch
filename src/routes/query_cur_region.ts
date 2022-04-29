@@ -18,43 +18,19 @@ export default class check {
         }
         let curRegion = {
             regionInfo: {
-              gateserverIp: '47.90.134.147',
+              gateserverIp: "127.0.0.1",
               gateserverPort: 22102,
-              payCallbackUrl: 'https://osusaoaserver.yuanshen.com/recharge',
-              areaType: 'USA',
-              resourceUrl: 'https://autopatchhk.yuanshen.com/client_game_res/2.6_live',
-              dataUrl: 'https://autopatchhk.yuanshen.com/client_design_data/2.6_live',
               feedbackUrl: 'https://webstatic-sea.hoyoverse.com/ys/event/im-service/index.html?im_out=false&sign_type=2&auth_appid=im_ccs&authkey_ver=1&win_direction=portrait',
-              resourceUrlBak: '2.6_live',
-              clientDataVersion: 6731353,
-              clientSilenceDataVersion: 6845002,
-              clientDataMd5: '{"remoteName": "data_versions", "md5": "1a445ae48fbdbe038312be868f2813d2", "fileSize": 4415}',
-              clientSilenceDataMd5: '{"remoteName": "data_versions", "md5": "ce13318ed99395726042c905dfb22abe", "fileSize": 514}',
-              resVersionConfig: {
-                version: 6708157,
-                md5: '{"remoteName": "res_versions_external", "md5": "9f092ca13067cae4313493eed3d3e9ae", "fileSize": 526966}\r\n' +
-                  '{"remoteName": "res_versions_medium", "md5": "7c942e704a804c2122fc63ee928e7148", "fileSize": 285550}\r\n' +
-                  '{"remoteName": "res_versions_streaming", "md5": "e35f6d853d04ce022ac7c36d43f40e7c", "fileSize": 122036}\r\n' +
-                  '{"remoteName": "release_res_versions_external", "md5": "8764b0f2ed815cd4430e085c461a6f4d", "fileSize": 526966}\r\n' +
-                  '{"remoteName": "release_res_versions_medium", "md5": "1bbe374c16bff4591599c21973420348", "fileSize": 285550}\r\n' +
-                  '{"remoteName": "release_res_versions_streaming", "md5": "72fa7ff66d514fcba34af007f2b9c2f8", "fileSize": 122036}\r\n' +
-                  '{"remoteName": "base_revision", "md5": "fbfa6d6e0702d1c79e0564fb2867e738", "fileSize": 18}',
-                releaseTotalSize: '0',
-                versionSuffix: '7a34a36a6e',
-                branch: '2.6_live'
-              },
+
               secretKey: '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',
-              officialCommunityUrl: 'https://webstatic-sea.hoyoverse.com/ys/event/e20200410go_community/index.html#/',
-              clientVersionSuffix: 'adfeb8be71',
-              clientSilenceVersionSuffix: 'a657df308e',
-              accountBindUrl: 'https://account.hoyoverse.com',
-              cdkeyUrl: 'https://hk4e-api-os.hoyoverse.com/common/apicdkey/api/exchangeCdkey?sign_type=2&auth_appid=apicdkey&authkey_ver=1',
-              privacyPolicyUrl: 'https://account.hoyoverse.com/#/about/privacyInGame?app_id=4&biz=hk4e_global'
             },
             clientSecretKey: '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',
             regionCustomConfigEncrypted: 'snowyz1ADgjd0gjCvKVYVTXFE20+PdlSKigJAaICuVjOsyYtvT14NbRB506vcI8s6VyZmughX1eacP1hglIHG/kvyZs1oZZxmTFkzTgas9w54NM3aler8N0HZwdELSdPphpCG8Ce9UMWGegEeclL0H9oZyAejeZXNYGLaN55c3ItloeGQAMFEI8aZPCicck8iKDSGcy8JssHtvmoek3y5pAENbhPpyohmWOxttdRjWZoBy7m+YsrxOrtWa7vhNNDOCGODFUcHq8hLy+GpYo4rIZKsMYsOcaVwcVGUf86bPj0vYQF9jIM8pQGyL5Uw/5y8iuTLdeqgFS1O5DBeZwIXcvE/J/xIJXAVlKAMcw0PujAc73S9FLrSXCw71CR+iMSZuzQxO8WsH8UzUJ4fFB5IEDvglWYNE0vh58YiinJO3pKW0DFzR+XJDMfBbgPyhaDpOb81ro='
         }
-        res.write(Buffer.from(b.encode(b.create(curRegion)).finish()).toString('base64'));
+        let encoded = b.encode(curRegion).finish()
+
+        
+        res.write(Buffer.from(encoded).toString('base64'));
 
 
         res.end();

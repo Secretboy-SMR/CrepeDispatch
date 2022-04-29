@@ -9,7 +9,7 @@ export default class check {
             body += chunk;
         });
         req.on('end', () => {
-            console.log(body);
+
             try{
                 let data = JSON.parse(body);
                 let uid = data.data.uid;
@@ -24,6 +24,8 @@ export default class check {
                 }
                 */
                 console.log(data)
+                res.writeHead(200, { 'Content-Type': 'application/json' })
+
                 var responseData = new LoginResultJson();
 
                 //todo change this to accountid

@@ -23,6 +23,9 @@ export default class check {
                     sign: '75f51c2166962b423d1cff70dc3f3c6a4343e397b1d4b92c2c8c3b779ce2daaa'
                 }
                 */
+
+                res.writeHead(200, { 'Content-Type': 'application/json' })
+                    
                 console.log(data)
                 var responseData = new LoginResultJson();
 

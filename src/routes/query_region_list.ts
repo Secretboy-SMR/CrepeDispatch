@@ -15,10 +15,10 @@ export default class check {
         let regionList = {
             regionList: [
                 {
-                    name: 'os_usa',
-                    title: 'America',
-                    type: 'DEV_PUBLIC',
-                    dispatchUrl: 'https://osusadispatch.yuanshen.com/query_cur_region'
+                    "name": "os_crepeapi",
+                    "title": "CrepeTS",
+                    "type": "DEV_PUBLIC",
+                    "dispatchUrl": "https://osusadispatch.yuanshen.com/query_cur_region"
                 },
                 {
                     name: 'os_euro',
@@ -43,7 +43,11 @@ export default class check {
             clientCustomConfigEncrypted: 'k0+gru74yO/WcA0vLdDEQIBwc+M0lmLB53ylsPtde3nliaC5ROHR1IS4LO8Q+3o0BHMr0my0bqFwwCAvZVXOFBHxXyUgrrmUTnZYVSQXNV6+MALBmmRU5yOzhhyHoEdj9YHZeyPpZkYc6DkJWCRYbFfmczNIs133KB9rlfug40w/hHa8pXyRyLaKQUMIUYEvt3Y=',
             enableLoginPc: true
         }
-        res.write(Buffer.from(b.encode(b.create(regionList)).finish()).toString('base64'));
+        const encoded = b.encode(regionList).finish();
+
+
+        res.write(Buffer.from(encoded).toString('base64'));
+        
         res.end();
     }
 }

@@ -1,5 +1,6 @@
 import Dispatch from "./dispatch";
 import * as readline from "readline";
+import DBService from "./dbservice";
 
 export var std = readline.createInterface({
     input: process.stdin,
@@ -9,6 +10,7 @@ export var std = readline.createInterface({
 const dispatch = new Dispatch(80, 443);
 
 checkContinue()
+const db = new DBService("mongodb://localhost:27017", "Crepe")
 
 dispatch.start();
 

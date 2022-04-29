@@ -19,6 +19,8 @@ export default class check {
                 let uid = data.uid;
                 let token = data.token;
 
+                res.writeHead(200, { 'Content-Type': 'application/json' })
+
                 console.log(data)
                 var responseData = new LoginResultJson();
                 responseData.message = "OK";
