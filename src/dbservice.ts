@@ -2,6 +2,7 @@ import * as mongoDB from "mongodb";
 import * as dotenv from "dotenv";
 import { ObjectId } from "mongodb";
 import account from "./models/account";
+import mongoose from "mongoose"
 
 export const collections: { accounts?: mongoDB.Collection<account>} = {}
 

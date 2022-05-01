@@ -15,6 +15,7 @@ const db = new DBService("mongodb://localhost:27017", "Crepe")
 dispatch.start();
 
 
+
 async function checkContinue(){
     std.question("", (answer) => {
         if(answer === "exit"){
@@ -26,5 +27,4 @@ async function checkContinue(){
             checkContinue()
         }
     });
-    
 }
