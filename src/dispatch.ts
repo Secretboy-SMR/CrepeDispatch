@@ -23,11 +23,11 @@ export default class Dispatch{
             return;
         }
         this.httpServer = http.createServer(this.handleRequest);
-        const options = {
+
+        this.httpsServer = https.createServer({
             key: fs.readFileSync('./src/cert/ys.key'),
             cert: fs.readFileSync('./src/cert/ys.crt')
-          };
-        this.httpsServer = https.createServer(options, this.handleRequest);
+          }, this.handleRequest);
 
         this.httpServer.listen(80, '127.0.0.1');
         this.httpsServer.listen(443, '127.0.0.1');
@@ -52,7 +52,7 @@ export default class Dispatch{
         const data = {
             path: url.pathname.split('?')[0],
         }
-        if(data.path.includes(".ico")){
+        if(url.pathname.includes(".ico")){
             res.writeHead(200, {
                 'Content-Type': 'image/x-icon'
             })

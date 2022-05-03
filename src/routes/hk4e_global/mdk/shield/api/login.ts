@@ -1,7 +1,7 @@
 import http from 'http';
 import https from 'https';
-import { db } from 'src';
-import { log } from 'src/dispatch';
+import { db } from '../../../../../../src/index';
+import { log } from '../../../../../../src/dispatch';
 
 
 export default class check {
@@ -11,23 +11,29 @@ export default class check {
             body += chunk;
         });
         req.on('end', async () => {
-            console.log(body);
+
             try{
                 let data = JSON.parse(body);
                 // let uid = data.data.uid;
                 // let token = data.data.token;
                 /*
 
+                {
+                    "account": "da",
+                    "password": "Eb2ZTMA0++3WzzMSSiNg2Udyy7qmsP1tONVG2HbePWm3Tex5Es2U8BaXs1yURROhfJERS1eTs7d6JSCS0LuuBkqSqTXlRaWuQqKE73S+Fe+3o66/6yg/JrorPdW/iGM3jiRcBUY1kFsvA1a2o7NNX70m+NdU9qQnue2E1rTPUJ4=",
+                    "is_crypto": true
+                }
+
                 */
                 log("user is trying to login")
 
-                console.log(data.account)
+                console.log(data)
 
-                let account = await db.findAccountByName(data.account);
+                let acc = await db.findAccountByName(data.account);
                 res.writeHead(200, { 'Content-Type': 'application/json' })
 
-                if(account){
-                    console.log(data)
+                if(acc){
+                    console.log(acc)
                     var responseData = new LoginResultJson();
     
                     //todo change this to accountid
@@ -35,11 +41,23 @@ export default class check {
                     responseData.retcode = 0;
 
                     //shrug
-                    responseData.data.account.uid = account._id.toString();
+                    responseData.retcode = 0;
+                    responseData.message = "OK";
+                    responseData.data.account.name = acc.username || ""
+                    responseData.data.account.mobile = acc.username || ""
+                    responseData.data.account.facebook_name = acc.username || ""
+                    responseData.data.account.google_name = acc.username || ""
+                    responseData.data.account.twitter_name = acc.username || ""
+                    responseData.data.account.steam_name = acc.username || ""
+                    responseData.data.account.apple_name = acc.username || ""
+                    responseData.data.account.sony_name = acc.username || ""
+                    responseData.data.account.tap_name = acc.username || ""
 
-                    //todo: generate new one
-                    responseData.data.account.token = "iX83IUoKqll8uwaouASaleG6bJkCLXBk";
-                    responseData.data.account.email = account.email||"lmfao@gmail.com";
+                    
+                    responseData.data.account.uid = acc.acc_id;
+                    responseData.data.account.token = db.generateNewToken();;
+                    responseData.data.account.email = acc.email
+                    res.write(JSON.stringify(responseData));
 
 
                     res.write(JSON.stringify(responseData));
@@ -89,13 +107,13 @@ class LoginResultJson {
 class VerifyData {
     public account = new VerifyAccountData();
     public device_grant_required = false;
-    public realname_operation = "NONE";
+    public realname_operation = "None";
     public realperson_required = false;
     public safe_mobile_required = false;
 }
 
 class VerifyAccountData {
-    public uid?:string;
+    public uid?:string|number;
     public name = "";
     public email?:string;
     public mobile = "";
@@ -113,6 +131,8 @@ class VerifyAccountData {
     public tap_name = "";
     public country = "US";
     public reactivate_ticket = "";
-    public area_code = "**";
+    public area_code = "NB";
+    public steam_name = "";
     public device_grant_ticket = "";
 }
+

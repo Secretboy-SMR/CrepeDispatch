@@ -35,10 +35,13 @@ export default class DBService{
     }
 
     async findAccountById(id: string|number){
-        let accountCursor = collections.accounts?.find({id: new ObjectId(id)})
+        let accountCursor = collections.accounts?.find({acc_id: id.toString()})
         return accountCursor?.limit(1).next();
     }
     async findAccountByToken(token: string){
+
+        //dont use this please
+        
         let accountCursor = collections.accounts?.find({token: token})
         return accountCursor?.limit(1).next();
     }
@@ -51,7 +54,8 @@ export default class DBService{
     }
     
     generateNewToken(){
-
+        //lol
+        return "iX83IUoKqll8uwaouASaleG6bJkCLXBk"
     }
 
     test(){

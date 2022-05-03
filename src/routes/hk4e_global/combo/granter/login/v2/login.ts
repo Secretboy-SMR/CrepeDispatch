@@ -1,5 +1,7 @@
 import http from 'http';
 import https from 'https';
+import { db } from '../../../../../../../src/index';
+import { log } from '../../../../../../../src/dispatch';
 
 
 export default class check {
@@ -8,43 +10,91 @@ export default class check {
         req.on('data', (chunk) => {
             body += chunk;
         });
-        req.on('end', () => {
+        req.on('end', async () => {
 
             try{
                 let data = JSON.parse(body);
-                let uid = data.data.uid;
-                let token = data.data.token;
                 /*
                 {
-                    data: '{"uid":"1","guest":false,"token":"iX83IUoKqll8uwaouASaleG6bJkCLXBk"}',
-                    app_id: '4',
-                    channel_id: '1',
-                    device: '713977b788390d5de26ca59257d75d229ebc49661634257199132',
-                    sign: '75f51c2166962b423d1cff70dc3f3c6a4343e397b1d4b92c2c8c3b779ce2daaa'
+                data: '{"uid":"21345","guest":false,"token":"iX83IUoKqll8uwaouASaleG6bJkCLXBk"}',
+                app_id: '4',
+                channel_id: '1',
+                device: '713977b788390d5de26ca59257d75d229ebc49661651355595437',
+                sign: '39851c65d827aa2fd27509720aad3122253a303cb891d4e78a5d34072dee1601'
                 }
+
+                {
+                    "retcode": 0,
+                    "message": "OK",
+                    "data": {
+                        "combo_id": "89858023",
+                        "open_id": "129399082",
+                        "combo_token": "580729acc024f02927c94ab18a88bf171c40e0fc",
+                        "data": "{\"guest\":false}",
+                        "heartbeat": false,
+                        "account_type": 1
+                    }
+                }
+                
                 */
                 console.log(data)
                 res.writeHead(200, { 'Content-Type': 'application/json' })
 
-                var responseData = new LoginResultJson();
+                let inuid:string = JSON.parse(data.data).uid
 
+                var responseData = new ComboTokenResJson();
+                let acc = await db.findAccountById(inuid)
+                if(acc){
+                    responseData.retcode = 0;
+                    responseData.message = "OK";
+                    responseData.data.combo_id = "129399082"
+                    responseData.data.combo_token = db.generateNewToken();
+                    responseData.data.open_id = inuid.toString()
+                    res.write(JSON.stringify(
+                        responseData
+                    ));
+                    console.log(JSON.parse(JSON.stringify(responseData)))
+                }else{
+                    responseData.retcode = -201
+                    responseData.message = "bad uid";
+                    res.write(JSON.stringify(responseData));
+                }
                 //todo change this to accountid
-                responseData.retcode = 0;
-                responseData.message = "OK";
 
-                responseData.data.account.uid = uid;
-                responseData.data.account.token = token;
-                responseData.data.account.email = "lmfao@gmail.com";
-                res.write(JSON.stringify(responseData));
                 
             }catch(e){
                 console.log(e);
+                var responseData = new ComboTokenResJson();
+                responseData.retcode = -201
+                responseData.message = "bad data";
+                
+
+                res.write(JSON.stringify(responseData));
             }
             res.end();
 
         });
 
     }
+}
+
+
+class ComboTokenResJson {
+	public message?:string;
+	public retcode?:number;
+	public data:LoginData = new LoginData();
+	
+
+}
+
+class LoginData {
+    public account_type?:number = 1;
+    public heartbeat?:string;
+    public combo_id?:string;
+    public combo_token?:string;
+    public open_id?:string;
+    public data?:string = "{\"guest\":false}";
+    public fatigue_remind?:string = undefined; // ?
 }
 class ComboTokenReqJson {
 	public app_id?:number;
@@ -71,13 +121,13 @@ class LoginResultJson {
 class VerifyData {
     public account = new VerifyAccountData();
     public device_grant_required = false;
-    public realname_operation = "NONE";
+    public realname_operation = "None";
     public realperson_required = false;
     public safe_mobile_required = false;
 }
 
 class VerifyAccountData {
-    public uid?:string;
+    public uid?:string|number;
     public name = "";
     public email?:string;
     public mobile = "";
@@ -95,6 +145,7 @@ class VerifyAccountData {
     public tap_name = "";
     public country = "US";
     public reactivate_ticket = "";
-    public area_code = "**";
+    public area_code = "NB";
+    public steam_name = "";
     public device_grant_ticket = "";
 }
