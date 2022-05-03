@@ -1,5 +1,7 @@
 import http from 'http';
 import https from 'https';
+import { db } from 'src';
+import { log } from 'src/dispatch';
 
 
 export default class check {
@@ -8,35 +10,50 @@ export default class check {
         req.on('data', (chunk) => {
             body += chunk;
         });
-        req.on('end', () => {
+        req.on('end', async () => {
             console.log(body);
             try{
                 let data = JSON.parse(body);
                 // let uid = data.data.uid;
                 // let token = data.data.token;
                 /*
-                {
-                    data: '{"uid":"1","guest":false,"token":"iX83IUoKqll8uwaouASaleG6bJkCLXBk"}',
-                    app_id: '4',
-                    channel_id: '1',
-                    device: '713977b788390d5de26ca59257d75d229ebc49661634257199132',
-                    sign: '75f51c2166962b423d1cff70dc3f3c6a4343e397b1d4b92c2c8c3b779ce2daaa'
-                }
+
                 */
+                log("user is trying to login")
 
+                console.log(data.account)
+
+                let account = await db.findAccountByName(data.account);
                 res.writeHead(200, { 'Content-Type': 'application/json' })
-                    
-                console.log(data)
-                var responseData = new LoginResultJson();
 
-                //todo change this to accountid
-                responseData.message="OK";
-                responseData.retcode = 0;
-                responseData.data.account.uid = "1";
-                responseData.data.account.token = "iX83IUoKqll8uwaouASaleG6bJkCLXBk";
-                responseData.data.account.email = "lmfao@gmail.com";
-                res.write(JSON.stringify(responseData));
-                console.log(JSON.stringify(responseData));
+                if(account){
+                    console.log(data)
+                    var responseData = new LoginResultJson();
+    
+                    //todo change this to accountid
+                    responseData.message="OK";
+                    responseData.retcode = 0;
+
+                    //shrug
+                    responseData.data.account.uid = account._id.toString();
+
+                    //todo: generate new one
+                    responseData.data.account.token = "iX83IUoKqll8uwaouASaleG6bJkCLXBk";
+                    responseData.data.account.email = account.email||"lmfao@gmail.com";
+
+
+                    res.write(JSON.stringify(responseData));
+                    log(JSON.stringify(responseData));
+                }else{
+                    //account doesnt exist
+                    var responseData = new LoginResultJson();
+                    responseData.retcode = -201
+                    responseData.message = "Username not found";
+                    res.write(JSON.stringify(responseData));
+                    log(JSON.stringify(responseData));
+                }
+                    
+
 
             }catch(e){
                 console.log(e);

@@ -7,15 +7,25 @@ export var std = readline.createInterface({
     output: process.stdout,
 });
 
-const dispatch = new Dispatch(80, 443);
 
-checkContinue()
-const db = new DBService("mongodb://localhost:27017", "Crepe")
-
-dispatch.start();
+export var dispatch:Dispatch; 
+export var db :DBService;
 
 
+const start= async()=>{
+    dispatch = new Dispatch(80, 443);
+    db =  new DBService("mongodb://localhost:27017", "Crepe")
+    await db.connectToDatabase();
+    //dispatch can use some db functions so better wait for db to initalize
+    dispatch.start();
 
+    checkContinue();
+
+
+
+    // db.test()
+}
+start();
 async function checkContinue(){
     std.question("", (answer) => {
         if(answer === "exit"){

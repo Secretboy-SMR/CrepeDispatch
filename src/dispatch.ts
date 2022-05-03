@@ -5,7 +5,7 @@ import * as fs from "fs";
 import {std} from "./index"
 import route from './routes/route';
 
-function log(...args: any[]) {
+export function log(...args: any[]) {
     std.write(`CONSOLE: ${args.join(" ")}\n`);
 }
 type IRoute = typeof import("./routes/route");

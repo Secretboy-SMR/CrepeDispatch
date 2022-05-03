@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "uid": "12345",
+            "name": "",
+            "email": "",
+            "mobile": "",
+            "is_email_verify": false,
+            "realname": "",
+            "identity_card": "",
+            "token": "token",
+            "is_guest": false,
+            "guest_id": "",
+            "safe_mobile": "",
+            "account": "acc",
+            "is_login": true,
+            "login_type": 1,
+            "payload": "",
+            "channel_id": 0,
+            "asterisk_name": "",
+            "accessToken": "",
+            "deviceId": "device",
+            "country": "CN",
+            "area_code": "**",
+            "thirdLoginTimestamp": 0
+        }
+    ]
+}

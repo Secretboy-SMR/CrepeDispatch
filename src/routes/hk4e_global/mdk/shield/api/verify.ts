@@ -17,7 +17,7 @@ export default class check {
                 //{ uid: '1', token: 'iX83IUoKqll8uwaouASaleG6bJkCLXBk' }
                 let data = JSON.parse(body);
                 let uid = data.uid;
-                let token = data.token;
+                let token = data.token||"iX83IUoKqll8uwaouASaleG6bJkCLXBk";
 
                 res.writeHead(200, { 'Content-Type': 'application/json' })
 
@@ -25,6 +25,8 @@ export default class check {
                 var responseData = new LoginResultJson();
                 responseData.message = "OK";
                 responseData.data.account.uid = uid;
+
+                //todo: generate new token
                 responseData.data.account.token = token;
 				responseData.data.account.email = "lmfao@gmail.com";
                 res.write(JSON.stringify(responseData));

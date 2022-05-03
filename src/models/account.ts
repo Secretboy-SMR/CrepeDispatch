@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 
 export default class account {
-    public id?: ObjectId;
+    public acc_id?: number;
     public playerUid?:string;
     public username?:string;
     public sessionKey?:string;
