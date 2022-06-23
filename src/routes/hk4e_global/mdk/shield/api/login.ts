@@ -1,5 +1,5 @@
-import http from 'http';
-import https from 'https';
+import * as http from 'http';
+import * as https from 'https';
 import { db } from '../../../../../../src/index';
 import { log } from '../../../../../../src/dispatch';
 
@@ -43,20 +43,20 @@ export default class check {
                     //shrug
                     responseData.retcode = 0;
                     responseData.message = "OK";
-                    responseData.data.account.name = acc.username || ""
-                    responseData.data.account.mobile = acc.username || ""
-                    responseData.data.account.facebook_name = acc.username || ""
-                    responseData.data.account.google_name = acc.username || ""
-                    responseData.data.account.twitter_name = acc.username || ""
-                    responseData.data.account.steam_name = acc.username || ""
-                    responseData.data.account.apple_name = acc.username || ""
-                    responseData.data.account.sony_name = acc.username || ""
-                    responseData.data.account.tap_name = acc.username || ""
+                    responseData.data.account.name = acc.Username || ""
+                    responseData.data.account.mobile = acc.Username || ""
+                    responseData.data.account.facebook_name = acc.Username || ""
+                    responseData.data.account.google_name = acc.Username || ""
+                    responseData.data.account.twitter_name = acc.Username || ""
+                    responseData.data.account.steam_name = acc.Username || ""
+                    responseData.data.account.apple_name = acc.Username || ""
+                    responseData.data.account.sony_name = acc.Username || ""
+                    responseData.data.account.tap_name = acc.Username || ""
 
                     
-                    responseData.data.account.uid = acc.acc_id;
+                    responseData.data.account.uid = acc.AccountID;
                     responseData.data.account.token = db.generateNewToken();;
-                    responseData.data.account.email = acc.email
+                    responseData.data.account.email = acc.Email
                     res.write(JSON.stringify(responseData));
 
 

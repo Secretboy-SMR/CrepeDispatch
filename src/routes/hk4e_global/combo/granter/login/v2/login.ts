@@ -1,7 +1,6 @@
-import http from 'http';
-import https from 'https';
-import { db } from '../../../../../../../src/index';
-import { log } from '../../../../../../../src/dispatch';
+import * as http from 'http';
+import * as https from 'https';
+import { db } from '../../../../../..';
 
 
 export default class check {
@@ -43,7 +42,7 @@ export default class check {
                 let inuid:string = JSON.parse(data.data).uid
 
                 var responseData = new ComboTokenResJson();
-                let acc = await db.findAccountById(inuid)
+                let acc = await db.findAccountById(Number(inuid))
                 if(acc){
                     responseData.retcode = 0;
                     responseData.message = "OK";
@@ -93,7 +92,7 @@ class LoginData {
     public combo_id?:string;
     public combo_token?:string;
     public open_id?:string;
-    public data?:string = "{\"guest\":false}";
+    public data?:string = `{"guest":false}`;
     public fatigue_remind?:string = undefined; // ?
 }
 class ComboTokenReqJson {

@@ -1,89 +1,38 @@
-import Dispatch from "./dispatch";
-import * as readline from "readline";
+import { Db } from "typeorm";
+import { AppDataSource } from "./data-source"
 import DBService from "./dbservice";
-import account from "./models/account";
+import Dispatch from "./dispatch";
+import { Accounts } from "./entity/Accounts"
 
-export var std = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
+const user = new Accounts();
 
+let db:DBService = new DBService();
 
-export var dispatch:Dispatch; 
-export var db :DBService;
+export {db};
 
+AppDataSource.initialize().then(async () => {
 
-const start= async()=>{
-    dispatch = new Dispatch(80, 443);
-    db =  new DBService("mongodb://localhost:27017", "Crepe")
-    await db.connectToDatabase();
-    //dispatch can use some db functions so better wait for db to initalize
-    dispatch.start();
-
-    checkContinue();
-
+    console.log("Inserting a new user into the database...")
+    const user = new Accounts();
+    user.AccountID = 101010102;
+    user.Email = "test@gmail.com";
+    user.Password = "test";
+    user.CountryCode = "ts";
+    user.Token = "23232";
+    user.Username = "testo?"
 
 
-    // db.test()
-}
-start();
-async function checkContinue(){
-    std.question("", (answer) => {
-        if(answer === "exit"){
-            dispatch.stop();
-            std.write("exiting...\n");
-            process.exit();
-        }else{
-            handleCommand(answer).then((resp)=>{
-                if(resp)console.log(resp)
-            })
-            checkContinue()
-        }
-    });
-}
+    // await AppDataSource.manager.save(user, {
+        
+    // })
+    console.log("Saved a new user with id: " + user.AccountID)
 
-async function handleCommand(answer:string){
-    let command = answer.split(" ")[0]
-    let args = answer.split(" ").slice(1)
+    console.log("Loading users from the database...")
+    const users = await AppDataSource.manager.find(Accounts)
+    console.log("Loaded users: ", users)
 
-    switch(command.toLowerCase()){
-        case "add":
-            if(args[0] == "-h" || args[0] == "--help"){
-                return "add [username] [uid] [?country] [?email]"
-            }
-            let username:string = args[0]
-            let uid:string = parseInt(args[1]).toString()
-            let country:string =args[2] || "US"
-            let email:string = args[3] || "no@mail.net"
+    let a = new Dispatch(80,443);
+    //db.test();
+    a.start();
 
-            //todo: find if theres a duplicate
-            if(!username) return ":/"
-            let a = new account()
-
-            a.email = email
-
-            a.username = username;
-            a.country = country
-            a.acc_id = uid;
-
-            db.addAccount(a)
-
-            return "account added"
-
-
-
-            break;
-        case "remove":
-            break;
-        case "reset":
-
-            break;
-        default:
-            break;
-    }
-    if(command.length>0){
-        return;
-    }else{
-        return;
-    }
-}
+}).catch(error => console.log(error))

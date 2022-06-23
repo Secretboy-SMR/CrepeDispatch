@@ -1,4 +1,4 @@
-import http from 'http';
+import * as http from 'http';
 export default class route{
     static async get(req: http.IncomingMessage, res: http.ServerResponse){
         res.writeHead(200, {

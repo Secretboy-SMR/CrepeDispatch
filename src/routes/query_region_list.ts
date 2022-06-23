@@ -1,6 +1,6 @@
-import http from 'http';
-import https from 'https';
-import protobuf from "protobufjs";
+import * as http from 'http';
+import * as https from 'https';
+import * as protobuf from "protobufjs";
 
 
 export default class check {
@@ -9,6 +9,7 @@ export default class check {
             'Content-Type': 'text/plain'
         });
 
+    
         let a = protobuf.loadSync("./src/proto/QueryRegionListHttpRsp.proto");
         let b= a.lookupType("QueryRegionListHttpRsp");
 

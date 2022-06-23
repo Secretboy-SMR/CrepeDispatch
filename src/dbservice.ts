@@ -1,56 +1,46 @@
-import * as mongoDB from "mongodb";
-import * as dotenv from "dotenv";
-import { ObjectId } from "mongodb";
-import account from "./models/account";
+import * as typeorm from "typeorm"
+import { AppDataSource } from "./data-source";
 
-export const collections: { accounts?: mongoDB.Collection<account>} = {}
+import {Accounts} from "./entity/Accounts";
+
 
 
 export default class DBService{
-    constructor(public dburl: string, public dbname: string){
-        
+
+    constructor(){}
+    
+    getAccounts(){
+        return AppDataSource.getRepository(Accounts)
     }
 
-    async connectToDatabase () {
-        dotenv.config();
-     
-        const client: mongoDB.MongoClient = new mongoDB.MongoClient(this.dburl);
-                
-        await client.connect();
-            
-        const db: mongoDB.Db = client.db(this.dbname);
-       
-        const accountsCollection: mongoDB.Collection<account> = db.collection<account>("accounts");
-        // console.log(accountsCollection)
-        collections.accounts = accountsCollection;
-           
-        console.log(`Successfully connected to database: ${db.databaseName} and collection: ${accountsCollection.collectionName}`);
-    }
     async findAccountByName(name: string){
 
-        let accountCursor = collections.accounts?.find({username: name})
-        return accountCursor?.limit(1).next();
+        return this.getAccounts().findOneBy({
+            Username:name
+        })
+
+
 
         // return collections.accounts?.findOne({username: name})
     }
 
-    async findAccountById(id: string|number){
-        let accountCursor = collections.accounts?.find({acc_id: id.toString()})
-        return accountCursor?.limit(1).next();
+    async findAccountById(id:number){
+        return this.getAccounts().findOneBy({
+            AccountID: id
+        })
     }
     async findAccountByToken(token: string){
 
         //dont use this please
         
-        let accountCursor = collections.accounts?.find({token: token})
-        return accountCursor?.limit(1).next();
+        return this.getAccounts().findOneBy({
+            Token:token
+        })
     }
 
-    async addAccount(account : account){
-        let count = await collections.accounts?.countDocuments();
+    async addAccount(account : Accounts){
+        this.getAccounts().insert(account)
 
-        // account.id = new ObjectId(count||1)
-        collections.accounts?.insertOne(account);
     }
     
     generateNewToken(){
@@ -59,11 +49,11 @@ export default class DBService{
     }
 
     test(){
-        let a = new account();
-        a.country = "us";
-        a.email = "lmfao@gmail.com"
-        a.password = "testo";
-        a.username = "testf";
+        let a = new Accounts();
+        a.CountryCode = "us";
+        a.Email = "lmfao@gmail.com"
+        a.Password = "testo";
+        a.Username = "testf";
         this.addAccount(a)
         // console.log(collections.accounts)
 

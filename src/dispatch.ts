@@ -1,12 +1,11 @@
-import http from 'http';
-import https from 'https';
+import * as http from 'http';
+import * as https from 'https';
 import * as fs from "fs";
 
-import {std} from "./index"
 import route from './routes/route';
 
 export function log(...args: any[]) {
-    std.write(`CONSOLE: ${args.join(" ")}\n`);
+    console.log(`CONSOLE: ${args.join(" ")}\n`);
 }
 type IRoute = typeof import("./routes/route");
 export default class Dispatch{
@@ -22,6 +21,7 @@ export default class Dispatch{
             log("already started");
             return;
         }
+
         this.httpServer = http.createServer(this.handleRequest);
 
         this.httpsServer = https.createServer({
@@ -66,10 +66,10 @@ export default class Dispatch{
 
         }catch(e){
             try{
-                let rsp = await import(`./routes${data.path}`) as object;
-                res.end(JSON.stringify(rsp))
+                let rsp = await fs.readFileSync(`./routes${data.path}`);
+                res.end(rsp)
             }catch(e){
-                log(e)
+                //log(e)
                 res.end("404");
             }
         }
